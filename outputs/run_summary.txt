@@ -1,8 +1,9 @@
 NSGA-II Energy-Aware FJSP - Run Summary
 ========================================
-Jobs: 15, Machines: 4, Operations: 116
+Instance: Brandimarte mk01
+Jobs: 10, Machines: 6, Operations: 55
 Population size: 20, Generations: 800, Seed: 42
-Pareto front size: 18
-Best makespan: 200.00 minutes
-Best energy cost: 116.1513 EUR
-Min-makespan solution energy cost: 118.2967 EUR
+Pareto front size: 15
+Best makespan: 42.00 minutes
+Best energy cost: 24.1046 EUR
+Min-makespan solution energy cost: 25.1436 EUR

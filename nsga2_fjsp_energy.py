@@ -56,6 +56,7 @@ from pymoo.termination import get_termination
 SCRIPT_DIR = Path(__file__).resolve().parent
 PRICE_CSV = SCRIPT_DIR / "belgium_prices_feb2022.csv"
 OUTPUT_DIR = SCRIPT_DIR / "outputs"
+BENCHMARK_DIR = SCRIPT_DIR / "benchmarks" / "brandimarte"
 
 
 def load_price_series(csv_path: Path) -> np.ndarray:
@@ -117,6 +118,50 @@ def generate_fjsp_instance(rng, n_jobs=15, n_machines=4, min_ops=5, max_ops=10,
             for m in machines:
                 proc_times[m] = rng.randint(min_time, max_time)
             operations.append((job_id, op_id, proc_times))
+    return operations, n_jobs, n_machines
+
+
+def parse_fjs_instance(path):
+    """
+    Parse a Flexible Job-Shop Scheduling instance in the standard (Hurink)
+    ``.fjs``/text format used by the Brandimarte (1993) benchmark suite:
+
+        <n_jobs> <n_machines>
+        <n_ops_job1> <n_alt_op1> <machine> <time> [<machine> <time> ...] <n_alt_op2> ...
+        ...(one line per job)
+
+    Machine indices in the file are 0-based. Returns the same
+    ``(operations, n_jobs, n_machines)`` structure as
+    `generate_fjsp_instance`, so it is a drop-in replacement for random
+    instance generation.
+
+    Parameters
+    ----------
+    path : Path
+        Path to the instance file.
+
+    Returns
+    -------
+    operations : list[tuple[int, int, list[int | None]]]
+    n_jobs, n_machines : int
+    """
+    lines = [line.split() for line in Path(path).read_text().strip().splitlines()]
+    n_jobs, n_machines = int(lines[0][0]), int(lines[0][1])
+
+    operations = []
+    for job_id in range(n_jobs):
+        toks = [int(t) for t in lines[1 + job_id]]
+        idx = 0
+        n_ops = toks[idx]; idx += 1
+        for op_id in range(n_ops):
+            n_alt = toks[idx]; idx += 1
+            proc_times = [None] * n_machines
+            for _ in range(n_alt):
+                machine, time = toks[idx], toks[idx + 1]
+                idx += 2
+                proc_times[machine] = time
+            operations.append((job_id, op_id, proc_times))
+
     return operations, n_jobs, n_machines
 
 
@@ -415,8 +460,17 @@ def plot_pareto_front(F, out_path):
     plt.close(fig)
 
 
+BENCHMARK_CHOICES = [f"mk{i:02d}" for i in range(1, 11)]
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description="NSGA-II energy-aware FJSP mini project")
+    parser.add_argument("--instance", choices=BENCHMARK_CHOICES, default="mk01",
+                         help="Brandimarte (1993) FJSP benchmark instance to solve "
+                              "(default: mk01, 10 jobs / 6 machines). Ignored if --random is set.")
+    parser.add_argument("--random", action="store_true",
+                         help="Generate a random FJSP instance instead of using a benchmark "
+                              "(uses --n-jobs/--n-machines/--min-ops/--max-ops/--min-time/--max-time).")
     parser.add_argument("--n-jobs", type=int, default=15)
     parser.add_argument("--n-machines", type=int, default=4)
     parser.add_argument("--min-ops", type=int, default=5)
@@ -433,14 +487,21 @@ def main():
     args = parse_args()
     OUTPUT_DIR.mkdir(exist_ok=True)
 
-    rng = random.Random(args.seed)
     price_array = load_price_series(PRICE_CSV)
 
-    operations, n_jobs, n_machines = generate_fjsp_instance(
-        rng, n_jobs=args.n_jobs, n_machines=args.n_machines,
-        min_ops=args.min_ops, max_ops=args.max_ops,
-        min_time=args.min_time, max_time=args.max_time,
-    )
+    if args.random:
+        rng = random.Random(args.seed)
+        operations, n_jobs, n_machines = generate_fjsp_instance(
+            rng, n_jobs=args.n_jobs, n_machines=args.n_machines,
+            min_ops=args.min_ops, max_ops=args.max_ops,
+            min_time=args.min_time, max_time=args.max_time,
+        )
+        instance_label = f"random (seed={args.seed})"
+    else:
+        instance_path = BENCHMARK_DIR / f"{args.instance}.txt"
+        operations, n_jobs, n_machines = parse_fjs_instance(instance_path)
+        instance_label = f"Brandimarte {args.instance}"
+
     problem = EnergyAwareFJSP(operations, n_jobs, n_machines, price_array)
 
     algorithm = NSGA2WithLocalSearch(pop_size=args.pop_size)
@@ -469,6 +530,7 @@ def main():
     summary_lines = [
         "NSGA-II Energy-Aware FJSP - Run Summary",
         "========================================",
+        f"Instance: {instance_label}",
         f"Jobs: {n_jobs}, Machines: {n_machines}, Operations: {problem.n_ops}",
         f"Population size: {args.pop_size}, Generations: {args.n_gen}, Seed: {args.seed}",
         f"Pareto front size: {len(F_unique)}",
