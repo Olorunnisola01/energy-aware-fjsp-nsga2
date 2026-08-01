@@ -1,0 +1,8 @@
+NSGA-II Energy-Aware FJSP - Run Summary
+========================================
+Jobs: 15, Machines: 4, Operations: 116
+Population size: 20, Generations: 800, Seed: 42
+Pareto front size: 18
+Best makespan: 200.00 minutes
+Best energy cost: 116.1513 EUR
+Min-makespan solution energy cost: 118.2967 EUR
