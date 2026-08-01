@@ -14,6 +14,11 @@ energy rate lets the optimiser genuinely trade off "finish faster" against
 problem manufacturers face as energy grids shift toward intermittent,
 price-volatile renewable generation.
 
+**Full write-up**: [`docs/documentation.pdf`](docs/documentation.pdf) — a
+complete document covering motivation, related work, problem formulation,
+methodology, data sources, experimental results, and an explicit comparison
+against Burmeister et al. (2024).
+
 ## Background and motivation
 
 This project is a small-scale, educational implementation inspired by the
