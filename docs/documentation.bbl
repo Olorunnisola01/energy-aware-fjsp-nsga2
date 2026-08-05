@@ -1,0 +1,119 @@
+\begin{thebibliography}{15}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Abujarad et~al.(2017)Abujarad, Mustafa, and
+  Jamian]{abujarad2017recent}
+S.~Y. Abujarad, M.~W. Mustafa, and J.~J. Jamian.
+\newblock Recent approaches of unit commitment in the presence of intermittent
+  renewable energy resources: A review.
+\newblock \emph{Renewable and Sustainable Energy Reviews}, 70:\penalty0
+  215--223, 2017.
+\newblock \doi{10.1016/j.rser.2016.11.246}.
+
+\bibitem[Biel et~al.(2018)Biel, Zhao, Sutherland, and Glock]{biel2018flow}
+Konstantin Biel, Fu~Zhao, John~W. Sutherland, and Christoph~H. Glock.
+\newblock Flow shop scheduling with grid-integrated onsite wind power using
+  stochastic {MILP}.
+\newblock \emph{International Journal of Production Research}, 56\penalty0
+  (6):\penalty0 2076--2098, 2018.
+\newblock \doi{10.1080/00207543.2017.1351638}.
+
+\bibitem[Brandimarte(1993)]{brandimarte1993routing}
+Paolo Brandimarte.
+\newblock Routing and scheduling in a flexible job shop by tabu search.
+\newblock \emph{Annals of Operations Research}, 41\penalty0 (3):\penalty0
+  157--183, 1993.
+\newblock \doi{10.1007/BF02023073}.
+
+\bibitem[Burmeister et~al.(2024)Burmeister, Guericke, and
+  Schryen]{burmeister2024memetic}
+Sascha~C. Burmeister, Daniela Guericke, and Guido Schryen.
+\newblock A memetic {NSGA-II} for the multi-objective flexible job shop
+  scheduling problem with real-time energy tariffs.
+\newblock \emph{Flexible Services and Manufacturing Journal}, 36:\penalty0
+  1530--1570, 2024.
+\newblock \doi{10.1007/s10696-023-09517-7}.
+
+\bibitem[Carlucci et~al.(2021)Carlucci, Renna, and Materi]{carlucci2021job}
+Daniele Carlucci, Paolo Renna, and Sergio Materi.
+\newblock A job-scheduling decision-making model for sustainable production
+  planning with power constraint.
+\newblock \emph{IEEE Transactions on Engineering Management}, 2021.
+\newblock \doi{10.1109/TEM.2021.3103108}.
+
+\bibitem[Deb et~al.(2002)Deb, Pratap, Agarwal, and Meyarivan]{deb2002fast}
+Kalyanmoy Deb, Amrit Pratap, Sameer Agarwal, and T.~Meyarivan.
+\newblock A fast and elitist multiobjective genetic algorithm: {NSGA-II}.
+\newblock \emph{IEEE Transactions on Evolutionary Computation}, 6\penalty0
+  (2):\penalty0 182--197, 2002.
+\newblock \doi{10.1109/4235.996017}.
+
+\bibitem[D'Ettorre et~al.(2022)D'Ettorre, Banaei, Ebrahimy,
+  et~al.]{detorre2022exploiting}
+Francesco D'Ettorre, Marzieh Banaei, Razgar Ebrahimy, et~al.
+\newblock Exploiting demand-side flexibility: State-of-the-art, open issues and
+  social perspective.
+\newblock \emph{Renewable and Sustainable Energy Reviews}, 165:\penalty0
+  112605, 2022.
+\newblock \doi{10.1016/j.rser.2022.112605}.
+
+\bibitem[{ENTSO-E Transparency Platform}(2022)]{entsoe_transparency}
+{ENTSO-E Transparency Platform}.
+\newblock Day-ahead electricity prices, belgium bidding zone, february 2022.
+\newblock \url{https://transparency.entsoe.eu/}, 2022.
+
+\bibitem[Gandhi et~al.(2016)Gandhi, Rodr\'iguez-Gallegos, and
+  Srinivasan]{gandhi2016review}
+Oktoviano Gandhi, Carlos~D. Rodr\'iguez-Gallegos, and Dipti Srinivasan.
+\newblock Review of optimization of power dispatch in renewable energy system.
+\newblock In \emph{2016 IEEE Innovative Smart Grid Technologies -- Asia
+  (ISGT-Asia)}, pages 250--257, 2016.
+\newblock \doi{10.1109/ISGT-Asia.2016.7796394}.
+
+\bibitem[Gong et~al.(2015)Gong, De~Pessemier, Joseph, and
+  Martens]{gong2015energy}
+X.~Gong, T.~De~Pessemier, W.~Joseph, and L.~Martens.
+\newblock An energy-cost-aware scheduling methodology for sustainable
+  manufacturing.
+\newblock \emph{Procedia CIRP}, 29:\penalty0 185--190, 2015.
+\newblock \doi{10.1016/j.procir.2015.01.041}.
+
+\bibitem[Kemmoe et~al.(2015)Kemmoe, Lamy, and Tchernev]{kemmo2015job}
+S.~Kemmoe, D.~Lamy, and N.~Tchernev.
+\newblock A job-shop with an energy threshold issue considering operations with
+  consumption peaks.
+\newblock \emph{IFAC-PapersOnLine}, 48\penalty0 (3):\penalty0 788--793, 2015.
+\newblock \doi{10.1016/j.ifacol.2015.06.179}.
+
+\bibitem[Moscato and Cotta(2003)]{moscato2003gentle}
+Pablo Moscato and Carlos Cotta.
+\newblock A gentle introduction to memetic algorithms.
+\newblock In \emph{Handbook of Metaheuristics}, pages 105--144. Springer, 2003.
+\newblock \doi{10.1007/0-306-48056-5_5}.
+
+\bibitem[{SchedulingLab}(n.d.)]{schedulinglab_fjsp}
+{SchedulingLab}.
+\newblock fjsp-instances: Machine-readable brandimarte (1993) fjsp benchmark
+  files in the standard hurink .fjs text format.
+\newblock \url{https://github.com/SchedulingLab/fjsp-instances}, n.d.
+
+\bibitem[Shrouf et~al.(2014)Shrouf, Ordieres-Mer\'e, Garc\'ia-S\'anchez, and
+  Ortega-Mier]{shrouf2014optimizing}
+F.~Shrouf, J.~Ordieres-Mer\'e, A.~Garc\'ia-S\'anchez, and M.~Ortega-Mier.
+\newblock Optimizing the production scheduling of a single machine to minimize
+  total energy consumption costs.
+\newblock \emph{Journal of Cleaner Production}, 67:\penalty0 197--207, 2014.
+\newblock \doi{10.1016/j.jclepro.2013.12.024}.
+
+\bibitem[Zhang et~al.(2014)Zhang, Zhao, Fang, and Sutherland]{zhang2014energy}
+H.~Zhang, F.~Zhao, K.~Fang, and J.~W. Sutherland.
+\newblock Energy-conscious flow shop scheduling under time-of-use electricity
+  tariffs.
+\newblock \emph{CIRP Annals}, 63\penalty0 (1):\penalty0 37--40, 2014.
+\newblock \doi{10.1016/j.cirp.2014.03.011}.
+
+\end{thebibliography}
