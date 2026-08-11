@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.21)  11 AUG 2026 20:34
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.21)  11 AUG 2026 20:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -776,11 +776,11 @@ Package rerunfilecheck Info: File `documentation.out' has not changed.
 (rerunfilecheck)             Checksum: 196CD800BB05BB377EAF92F394CF282C;3511.
  ) 
 Here is how much of TeX's memory you used:
- 21522 strings out of 467341
- 400398 string characters out of 5419596
- 996719 words of memory out of 5000000
+ 21524 strings out of 467341
+ 400422 string characters out of 5419596
+ 997716 words of memory out of 5000000
  50092 multiletter control sequences out of 15000+600000
- 712491 words of font info for 198 fonts, out of 8000000 for 9000
+ 712574 words of font info for 199 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,11n,79p,1010b,1260s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/texlive/2026
@@ -793,7 +793,7 @@ m/lmr12.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/texl
 ive/2026/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/texlive/2026/texmf-dis
 t/fonts/type1/public/lm/lmsy10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/publ
 ic/lm/lmtt10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmtt9.pfb>
-Output written on documentation.pdf (10 pages, 454321 bytes).
+Output written on documentation.pdf (10 pages, 454344 bytes).
 PDF statistics:
  328 PDF objects out of 1000 (max. 8388607)
  276 compressed objects within 3 object streams

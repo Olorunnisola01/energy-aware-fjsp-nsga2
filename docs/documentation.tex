@@ -50,7 +50,7 @@ Problem (FJSP). The scheduler jointly minimises two objectives, makespan and ene
 energy cost is calculated from a real, time-varying electricity price series rather than an assumed
 flat rate. The method is a \emph{memetic NSGA-II}: the multi-objective genetic algorithm NSGA-II
 \citep{deb2002fast}, combined with a greedy local-search refinement step. It is evaluated on real
-Brandimarte \citeyearpar{brandimarte1993routing} FJSP benchmark instances, using real ENTSO-E
+Brandimarte \citep{brandimarte1993routing} FJSP benchmark instances, using real ENTSO-E
 day-ahead electricity prices for Belgium in February 2022. The project follows the methodology
 introduced and validated by \citet{burmeister2024memetic}, who developed a memetic NSGA-II for FJSP
 under real-time energy tariffs. This document covers the motivation, problem formulation, algorithm
@@ -111,7 +111,7 @@ The literature on energy-cost-aware scheduling is organised around three tariff 
 to single-machine or flow-shop settings, considers energy cost alone, or ignores makespan entirely.
 Their paper closes this gap with a \emph{multi-objective}, RTP-aware FJSP formulation solved by a
 memetic NSGA-II, validated against an exact Gurobi solver on the Brandimarte
-\citeyearpar{brandimarte1993routing} benchmark suite.
+\citep{brandimarte1993routing} benchmark suite.
 
 \subsection{NSGA-II and Memetic Algorithms}
 \label{subsec:nsga2-memetic}
@@ -232,7 +232,7 @@ rather than one inflated with repeated points.
 \subsection{Benchmark Instances}
 \label{subsec:data-benchmark}
 
-This project uses ten Brandimarte \citeyearpar{brandimarte1993routing} FJSP benchmark instances,
+This project uses ten Brandimarte \citep{brandimarte1993routing} FJSP benchmark instances,
 mk01 through mk10, parsed from the standard Hurink \texttt{.fjs} text format. Machine indices are
 0-based; each job line lists its operation count, and for each operation, the number of eligible
 machines followed by machine/time pairs. Instance files were sourced from the public
