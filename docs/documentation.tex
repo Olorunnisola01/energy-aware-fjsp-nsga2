@@ -45,18 +45,18 @@
 
 \begin{abstract}
 \noindent
-This document describes the design, implementation, and results of a bi-objective optimisation
-project that schedules the Flexible Job-Shop Scheduling Problem (FJSP) to jointly minimise
-\textit{makespan} and \textit{energy cost}, where energy cost is computed from a real, time-varying
-electricity price series rather than an assumed flat rate. The scheduler is a \emph{memetic
-NSGA-II}: the multi-objective genetic algorithm NSGA-II \citep{deb2002fast}, hybridised with a
-greedy local-search refinement step, and solving real Brandimarte \citeyearpar{brandimarte1993routing}
-FJSP benchmark instances against real ENTSO-E day-ahead electricity prices (Belgium, February 2022).
-The project is methodologically inspired by \citet{burmeister2024memetic}, who introduce and validate
-a memetic NSGA-II for FJSP under real-time energy tariffs. This document covers the motivation,
-problem formulation, algorithm design, data sources, implementation, and results, and closes with an
-explicit comparison of what is simplified relative to the source paper. Source code and full results
-are hosted at \url{https://github.com/Olorunnisola01/energy-aware-fjsp-nsga2}.
+This document presents a bi-objective optimisation project for the Flexible Job-Shop Scheduling
+Problem (FJSP). The scheduler jointly minimises two objectives, makespan and energy cost, where
+energy cost is calculated from a real, time-varying electricity price series rather than an assumed
+flat rate. The method is a \emph{memetic NSGA-II}: the multi-objective genetic algorithm NSGA-II
+\citep{deb2002fast}, combined with a greedy local-search refinement step. It is evaluated on real
+Brandimarte \citeyearpar{brandimarte1993routing} FJSP benchmark instances, using real ENTSO-E
+day-ahead electricity prices for Belgium in February 2022. The project follows the methodology
+introduced and validated by \citet{burmeister2024memetic}, who developed a memetic NSGA-II for FJSP
+under real-time energy tariffs. This document covers the motivation, problem formulation, algorithm
+design, data sources, implementation, and results, and ends with an explicit account of how this
+project's scope differs from the source study. Source code and full results are available at
+\url{https://github.com/Olorunnisola01/energy-aware-fjsp-nsga2}.
 \end{abstract}
 
 \tableofcontents
@@ -67,28 +67,27 @@ are hosted at \url{https://github.com/Olorunnisola01/energy-aware-fjsp-nsga2}.
 \label{sec:introduction}
 % =====================================================================
 
-Electricity grids are incorporating increasing shares of intermittent renewable generation (wind,
-solar), which introduces volatility into energy supply and, consequently, into energy prices
-\citep{abujarad2017recent,gandhi2016review}. Under real-time pricing (RTP) tariffs, the cost of
-electricity can change at hourly (or finer) intervals depending on current market conditions. This
-creates both an opportunity and an incentive for energy-flexible manufacturers to practice \emph{demand
-response}: shifting production toward hours when energy is cheap, without any new capital investment
-\citep{detorre2022exploiting}.
+Electricity grids increasingly rely on intermittent renewable generation such as wind and solar
+\citep{abujarad2017recent,gandhi2016review}. This adds volatility to both energy supply and energy
+prices. Under real-time pricing (RTP) tariffs, electricity costs can change hourly, or even more
+often, depending on current market conditions. This gives energy-flexible manufacturers both an
+opportunity and an incentive to practise \emph{demand response}: shifting production to cheaper hours
+without any new capital investment \citep{detorre2022exploiting}.
 
-Job-shop scheduling problems are a natural setting for this idea. In the \emph{Flexible Job-Shop
-Scheduling Problem} (FJSP), each job consists of a sequence of operations, and each operation may be
-processed on any machine from a compatible subset, as opposed to the classical job-shop problem,
-where each operation is tied to exactly one machine. This flexibility gives a scheduler room to choose
-\textit{when} and \textit{on which machine} to run an operation, which is exactly the freedom needed
-to react to a time-varying energy price signal.
+Job-shop scheduling is a natural setting for this idea. In the \emph{Flexible Job-Shop Scheduling
+Problem} (FJSP), each job is a sequence of operations, and each operation can run on any machine from
+a compatible subset. This differs from the classical job-shop problem, where each operation is tied
+to exactly one machine. Because FJSP leaves room to choose both \textit{when} and \textit{on which
+machine} an operation runs, it gives a scheduler exactly the flexibility needed to respond to a
+time-varying energy price signal.
 
-Minimising energy cost in isolation is an ill-posed objective: a scheduler that always waits for the
-cheapest possible price window will produce arbitrarily long schedules. The problem is therefore
-inherently \emph{bi-objective}, simultaneously minimising makespan (total completion time) and energy
-cost, and the output of interest is not a single ``best'' schedule but a \emph{Pareto front} of
-trade-offs between the two, from which a decision-maker can select according to their own priorities.
+Minimising energy cost alone is not a well-posed goal: a scheduler that always waits for the cheapest
+price window would produce arbitrarily long schedules. The problem is therefore inherently
+\emph{bi-objective}, balancing makespan (total completion time) against energy cost. The useful output
+is not a single ``best'' schedule but a \emph{Pareto front} of trade-offs, from which a decision-maker
+can choose according to their own priorities.
 
-This project implements a memetic NSGA-II that approximates the makespan/energy-cost Pareto front for
+This project implements a memetic NSGA-II to approximate the makespan/energy-cost Pareto front for
 FJSP instances under a real RTP electricity price signal.
 
 % =====================================================================
@@ -105,41 +104,39 @@ The literature on energy-cost-aware scheduling is organised around three tariff 
 \begin{enumerate}[label=\arabic*.]
     \item \textbf{Fixed rate}: a constant price regardless of time of consumption
     (e.g.\ \citet{carlucci2021job,kemmo2015job}).
-    \item \textbf{Time-of-use (TOU) rate}: the day is divided into a small number of coarse-grained
-    periods (e.g.\ off-peak / mid-peak / on-peak), each with its own price
-    (e.g.\ \citet{zhang2014energy,biel2018flow}).
-    \item \textbf{Real-time pricing (RTP)}: the price is based on the current market value of energy
-    and can change at hourly or finer intervals (e.g.\ \citet{gong2015energy,shrouf2014optimizing}).
+    \item \textbf{Time-of-use (TOU) rate}: the day is split into a few broad periods (e.g.\ off-peak,
+    mid-peak, on-peak), each with its own price (e.g.\ \citet{zhang2014energy,biel2018flow}).
+    \item \textbf{Real-time pricing (RTP)}: the price tracks the current market value of energy and
+    can change at hourly or finer intervals (e.g.\ \citet{gong2015energy,shrouf2014optimizing}).
 \end{enumerate}
 
-\citet{burmeister2024memetic} identify a gap in this literature: prior RTP-based work is largely
-restricted to single-machine or flow-shop settings and single-objective (energy-cost-only)
-formulations, or neglects makespan optimisation entirely. Their paper closes this gap with a
-\emph{multi-objective}, RTP-aware FJSP formulation solved by a memetic NSGA-II, validated
-computationally against an exact Gurobi solver on the Brandimarte \citeyearpar{brandimarte1993routing}
-benchmark suite.
+\citet{burmeister2024memetic} identify a gap in this literature: most prior RTP-based work is limited
+to single-machine or flow-shop settings, considers energy cost alone, or ignores makespan entirely.
+Their paper closes this gap with a \emph{multi-objective}, RTP-aware FJSP formulation solved by a
+memetic NSGA-II, validated against an exact Gurobi solver on the Brandimarte
+\citeyearpar{brandimarte1993routing} benchmark suite.
 
 \subsection{NSGA-II and Memetic Algorithms}
 \label{subsec:nsga2-memetic}
 
-NSGA-II \citep{deb2002fast} is a widely used multi-objective evolutionary algorithm. It maintains a
+NSGA-II \citep{deb2002fast} is a widely used multi-objective evolutionary algorithm. It keeps a
 population of candidate solutions, ranks them into non-dominated fronts, and uses a crowding-distance
-measure to preserve diversity along each front, producing, generation over generation, an
+measure to preserve diversity within each front. Generation by generation, this produces an
 approximation of the true Pareto front rather than a single solution.
 
-A \emph{memetic algorithm} \citep{moscato2003gentle} augments a population-based metaheuristic with a
-local-search refinement step applied to individuals (typically offspring), combining the global
-exploration of an evolutionary algorithm with the fast local exploitation of a hill-climbing search.
-\citet{burmeister2024memetic} apply this idea to NSGA-II for FJSP; this project follows the same
+A \emph{memetic algorithm} \citep{moscato2003gentle} adds a local-search refinement step to a
+population-based metaheuristic, usually applied to offspring. This combines the global exploration of
+an evolutionary algorithm with the fast, local exploitation of a hill-climbing search.
+\citet{burmeister2024memetic} apply this idea to NSGA-II for FJSP, and this project follows the same
 combination.
 
 \subsection{Benchmark Instances}
 \label{subsec:benchmark}
 
-\citet{brandimarte1993routing} introduced a set of fifteen FJSP benchmark instances (mk01--mk15),
-commonly used in the FJSP literature (and by \citet{burmeister2024memetic}) as a standard testbed.
-This project uses ten of these instances (mk01--mk10), parsed from the standard Hurink
-\texttt{.fjs} text format.
+\citet{brandimarte1993routing} introduced fifteen FJSP benchmark instances (mk01--mk15), which are
+widely used in the FJSP literature, including by \citet{burmeister2024memetic}, as a standard testbed.
+This project uses ten of these instances (mk01--mk10), parsed from the standard Hurink \texttt{.fjs}
+text format.
 
 % =====================================================================
 \section{Problem Formulation}
@@ -153,8 +150,8 @@ This project uses ten of these instances (mk01--mk10), parsed from the standard 
     \item A set of jobs $\mathcal{J} = \{1, \ldots, n\}$, each consisting of an ordered sequence of
     operations that must be processed in sequence.
     \item A set of machines $\mathcal{M} = \{1, \ldots, m\}$.
-    \item For each operation, a subset of machines that can process it, and a processing time for
-    each such machine (processing time may differ by machine).
+    \item For each operation, the subset of machines that can process it, and the processing time on
+    each of those machines (processing time can differ by machine).
     \item A real-valued electricity price series $p(t)$ (EUR/kWh), giving the price of energy at
     every minute $t$ of the planning horizon.
 \end{itemize}
@@ -178,10 +175,10 @@ For every operation:
     \min f_2 &= \text{energy cost} = \sum_{i} \int_{\text{start}_i}^{\text{end}_i} p(t) \, dt
 \end{align}
 
-where the integral for each operation $i$ is evaluated exactly by summing the per-minute price over
-that operation's start/end window. No feasible solution can simultaneously minimise both objectives (a
-faster schedule generally cannot always wait for the cheapest price window), so the output is a
-Pareto-optimal set of trade-offs rather than one optimum.
+Here, the integral for operation $i$ is computed exactly by summing the per-minute price across that
+operation's start/end window. No single feasible solution can minimise both objectives at once, since
+a faster schedule generally cannot also wait for the cheapest price window. The output is therefore a
+Pareto-optimal set of trade-offs, not one single optimum.
 
 % =====================================================================
 \section{Methodology}
@@ -193,42 +190,42 @@ Pareto-optimal set of trade-offs rather than one optimum.
 
 A candidate solution is encoded as a vector of length $2 \times n_{\text{ops}}$:
 \begin{itemize}
-    \item The first half assigns, for each operation, an integer machine-choice index, taken modulo
-    the number of machines eligible for that specific operation (so any integer is a valid, decodable
-    gene, which avoids infeasible machine assignments by construction).
-    \item The second half assigns each operation a sort key; operations are dispatched in ascending
-    order of this key, subject to machine and job-precedence availability (a standard
-    permutation-based scheduling decoder).
+    \item The first half gives each operation an integer machine-choice index, taken modulo the
+    number of machines eligible for that operation. This means any integer is a valid, decodable
+    gene, and infeasible machine assignments are avoided by construction.
+    \item The second half gives each operation a sort key. Operations are then dispatched in
+    ascending order of this key, subject to machine availability and job precedence, following a
+    standard permutation-based scheduling decoder.
 \end{itemize}
 
 \subsection{Memetic NSGA-II}
 \label{subsec:memetic-nsga2}
 
-The algorithm is standard NSGA-II (non-dominated sorting, crowding distance, tournament selection,
-simulated-binary crossover and polynomial mutation for integer variables, via the \texttt{pymoo}
-library) with one addition: after each generation produces its offspring, every offspring is refined
-by a \emph{greedy local search} before being merged back into the population.
+The algorithm is standard NSGA-II, implemented via the \texttt{pymoo} library, using non-dominated
+sorting, crowding distance, tournament selection, simulated-binary crossover, and polynomial mutation
+for integer variables. One addition is made: after each generation produces its offspring, every
+offspring is refined by a \emph{greedy local search} before being merged back into the population.
 
 The local search alternates between two neighbourhood moves until neither improves the current
 solution:
 \begin{enumerate}[label=\arabic*.]
-    \item \textbf{Machine re-assignment}: for each operation, try the next eligible machine; keep
-    the move if it Pareto-dominates the current solution.
-    \item \textbf{Sequencing swap}: for each pair of operations, try swapping their sequencing keys;
-    keep the move if it Pareto-dominates the current solution.
+    \item \textbf{Machine re-assignment}: for each operation, the next eligible machine is tried,
+    and the move is kept if it Pareto-dominates the current solution.
+    \item \textbf{Sequencing swap}: for each pair of operations, their sequencing keys are swapped,
+    and the move is kept if it Pareto-dominates the current solution.
 \end{enumerate}
 
-This hybridises NSGA-II's global, population-level search with fast, solution-level exploitation,
-which is the core idea of a memetic algorithm \citep{moscato2003gentle} and the central
+This combines NSGA-II's global, population-level search with fast, solution-level exploitation. That
+combination is the core idea of a memetic algorithm \citep{moscato2003gentle}, and it is the central
 methodological device in \citet{burmeister2024memetic}.
 
 \subsection{Duplicate Removal}
 \label{subsec:duplicate-removal}
 
-NSGA-II's population can end a run containing multiple genotypes that decode to the same schedule
-(and therefore the same objective values). The final reported Pareto front is deduplicated
-(\texttt{numpy.unique} on objective values) so it reads as a clean, strictly non-dominated set rather
-than a front inflated with repeated points.
+By the end of a run, NSGA-II's population can contain multiple genotypes that decode to the same
+schedule, and therefore the same objective values. The final Pareto front is deduplicated using
+\texttt{numpy.unique} on objective values, so it is reported as a clean, strictly non-dominated set
+rather than one inflated with repeated points.
 
 % =====================================================================
 \section{Data}
@@ -238,13 +235,13 @@ than a front inflated with repeated points.
 \subsection{Benchmark Instances}
 \label{subsec:data-benchmark}
 
-Ten Brandimarte \citeyearpar{brandimarte1993routing} FJSP benchmark instances are used, mk01--mk10,
-parsed from the standard Hurink \texttt{.fjs} text format (machine indices 0-based; each job line
-lists its operation count, then for each operation its number of eligible machines followed by
-machine/time pairs). Instance files were sourced from the \texttt{SchedulingLab/fjsp-instances}
-public repository \citep{schedulinglab_fjsp} and independently validated (every token in every file
-was checked to parse into a complete, internally consistent operation list with no leftover or
-missing tokens) before use.
+This project uses ten Brandimarte \citeyearpar{brandimarte1993routing} FJSP benchmark instances,
+mk01 through mk10, parsed from the standard Hurink \texttt{.fjs} text format. Machine indices are
+0-based; each job line lists its operation count, and for each operation, the number of eligible
+machines followed by machine/time pairs. Instance files were sourced from the public
+\texttt{SchedulingLab/fjsp-instances} repository \citep{schedulinglab_fjsp}. Before use, every file
+was independently validated by checking that every token parsed into a complete, internally
+consistent operation list with no leftover or missing tokens.
 
 \begin{table}[htbp]
     \centering
@@ -273,12 +270,12 @@ The results reported in this document use \texttt{mk01} (10 jobs, 6 machines, 55
 \subsection{Electricity Price Data}
 \label{subsec:data-price}
 
-Real day-ahead electricity prices for the Belgian bidding zone, February 2022, were sourced from the
-ENTSO-E Transparency Platform \citep{entsoe_transparency}. The raw export (EUR/MWh, timestamps like
-``Feb 1, 2022 12:00 AM'') is preprocessed by \texttt{parsing\_data.py} into a clean
-\texttt{(timestamp, price\_eur\_per\_kWh)} series, which is then resampled to per-minute resolution
-at run time so that energy cost can be integrated exactly over each operation's start/end window
-rather than approximated at hourly granularity.
+Real day-ahead electricity prices for the Belgian bidding zone in February 2022 were sourced from the
+ENTSO-E Transparency Platform \citep{entsoe_transparency}. The raw export, in EUR/MWh with timestamps
+such as ``Feb 1, 2022 12:00 AM'', is preprocessed by \texttt{parsing\_data.py} into a clean
+\texttt{(timestamp, price\_eur\_per\_kWh)} series. At run time, this series is resampled to per-minute
+resolution, so energy cost can be integrated exactly over each operation's start/end window rather
+than approximated at hourly granularity.
 
 % =====================================================================
 \section{Implementation}
@@ -309,14 +306,14 @@ The project is implemented in Python~3, using:
     \end{tabular}
 \end{table}
 
-Both the benchmark instance choice and the NSGA-II run are fully specified by command-line arguments
-and a random seed, so a given configuration reproduces the same Pareto front:
+The benchmark instance and the NSGA-II run are both fully specified by command-line arguments and a
+random seed, so a given configuration always reproduces the same Pareto front:
 
 \begin{lstlisting}[language=bash,frame=single,numbers=none,basicstyle=\ttfamily\footnotesize]
 python nsga2_fjsp_energy.py --instance mk01 --n-gen 800 --pop-size 20 --seed 42
 \end{lstlisting}
 
-A \texttt{--random} flag is retained for generating synthetic FJSP instances of arbitrary size,
+A \texttt{--random} flag is also available for generating synthetic FJSP instances of any size,
 independent of the benchmark suite.
 
 % =====================================================================
@@ -349,10 +346,10 @@ independent of the benchmark suite.
 \subsection{Convergence}
 \label{subsec:convergence}
 
-Both objectives improve steadily over generations and plateau well before the run ends, indicating
-the population has converged. Figures~\ref{fig:convergence-makespan} and
-\ref{fig:convergence-energy} show the best makespan and best energy cost, respectively, as a
-function of the generation number.
+Both objectives improve steadily across generations and level off well before the run ends,
+indicating that the population has converged. Figures~\ref{fig:convergence-makespan} and
+\ref{fig:convergence-energy} show the best makespan and the best energy cost, respectively, plotted
+against generation number.
 
 \begin{figure}[htbp]
     \centering
@@ -371,10 +368,10 @@ function of the generation number.
 \subsection{Pareto Front}
 \label{subsec:pareto-front}
 
-The final, deduplicated Pareto front contains 15 non-dominated solutions, trading off a 42-minute
-minimum-makespan schedule (higher energy cost) against an 88-minute schedule at the lowest energy
-cost found. Figure~\ref{fig:pareto-front} plots the front, and Table~\ref{tab:pareto-front} lists
-the full set of non-dominated objective values.
+The final, deduplicated Pareto front contains 15 non-dominated solutions. These trade off a
+42-minute minimum-makespan schedule, which has a higher energy cost, against an 88-minute schedule
+at the lowest energy cost found. Figure~\ref{fig:pareto-front} plots the front, and
+Table~\ref{tab:pareto-front} lists the complete set of non-dominated objective values.
 
 \begin{figure}[htbp]
     \centering
@@ -413,8 +410,8 @@ the full set of non-dominated objective values.
 \subsection{Schedule (Gantt Chart)}
 \label{subsec:gantt}
 
-The schedule below corresponds to the minimum-makespan solution on the Pareto front (42 minutes).
-Each colour is a distinct job; bars are labelled with job/operation IDs where space allows.
+The schedule shown below is the minimum-makespan solution from the Pareto front (42 minutes). Each
+colour represents a distinct job, and bars are labelled with job/operation IDs where space allows.
 
 \begin{figure}[htbp]
     \centering
@@ -428,28 +425,31 @@ Each colour is a distinct job; bars are labelled with job/operation IDs where sp
 \label{sec:discussion}
 % =====================================================================
 
-This project reproduces the \emph{concept} of a memetic NSGA-II for energy-cost-aware FJSP described
-in \citet{burmeister2024memetic}, not their full experimental apparatus. Specifically:
+This project reproduces the \emph{concept} of a memetic NSGA-II for energy-cost-aware FJSP, as
+described by \citet{burmeister2024memetic}, but not their full experimental setup. The differences
+are as follows.
 
 \begin{itemize}
-    \item \textbf{Benchmark coverage.} The source paper validates on all fifteen Brandimarte
-    instances (mk01--mk15); this project includes and parses ten (mk01--mk10). The remaining five
-    (mk11--mk15) are substantially larger and, per the source paper, pushed even an exact Gurobi
-    solver to its memory limits; they are out of scope for a project of this scale run on commodity
-    hardware.
-    \item \textbf{No exact-solver comparison.} The source paper's central empirical claim is a
-    comparison of the memetic NSGA-II's approximated front against an exact Gurobi baseline (with
-    epsilon-constraint scalarisation) to quantify solution quality. This project does not implement
-    or run that comparison; its Pareto fronts should be read as the algorithm's own output, not as
-    validated-optimal.
-    \item \textbf{Price series.} The source paper models RTP tariffs at hourly and finer resolution
-    over multi-day planning horizons matched to each benchmark instance's scale. This project uses a
-    representative one-month hourly Belgian price series, resampled to per-minute resolution.
+    \item \textbf{Benchmark coverage.} The source paper validates its method on all fifteen
+    Brandimarte instances (mk01--mk15). This project includes and parses ten of them (mk01--mk10).
+    The remaining five (mk11--mk15) are substantially larger, and the source paper reports that they
+    pushed even an exact Gurobi solver to its memory limits. They are out of scope for a project of
+    this size, run on commodity hardware.
+    \item \textbf{No exact-solver comparison.} The source paper's central empirical claim compares
+    the memetic NSGA-II's approximated front against an exact Gurobi baseline, using
+    epsilon-constraint scalarisation, to quantify solution quality. This project does not implement
+    or run that comparison. Its Pareto fronts should therefore be read as the algorithm's own output,
+    not as validated-optimal solutions.
+    \item \textbf{Price series.} The source paper models RTP tariffs at hourly and finer resolution,
+    over multi-day planning horizons matched to the scale of each benchmark instance. This project
+    instead uses a representative one-month hourly Belgian price series, resampled to per-minute
+    resolution.
     \item \textbf{Local search operator.} This project's local search is a simplified greedy
-    neighbourhood search over machine reassignment and sequencing swaps; the source paper's operator
-    design and parameterisation is more extensive.
+    neighbourhood search over machine reassignment and sequencing swaps. The source paper's operator
+    design and parameterisation are more extensive.
     \item \textbf{No rolling horizon.} The source paper discusses extending the method to a
-    rolling-horizon setting that reacts to updated price forecasts; this is out of scope here.
+    rolling-horizon setting that reacts to updated price forecasts. That extension is out of scope
+    here.
 \end{itemize}
 
 % =====================================================================
@@ -459,15 +459,15 @@ in \citet{burmeister2024memetic}, not their full experimental apparatus. Specifi
 
 \begin{itemize}
     \item \textbf{Computational cost of local search.} The local-search step re-evaluates a full
-    neighbourhood every generation ($O(n_{\text{ops}})$ machine moves + $O(n_{\text{ops}}^2)$
-    sequencing swaps per offspring), which limits scalability to the largest benchmark instances
-    (mk08--mk10, 20 jobs) without further optimisation.
-    \item \textbf{No exact baseline.} Adding an exact or near-exact solver comparison (e.g.\ via a
-    MILP solver on smaller instances) would let solution quality be quantified rather than only
-    visualised.
-    \item \textbf{Static price horizon.} The energy price series is fixed for the duration of a run;
-    extending to a rolling-horizon setting that incorporates updated price forecasts, as discussed in
-    \citet{burmeister2024memetic}, is a natural next step.
+    neighbourhood every generation: $O(n_{\text{ops}})$ machine moves plus
+    $O(n_{\text{ops}}^2)$ sequencing swaps per offspring. This limits scalability to the largest
+    benchmark instances (mk08--mk10, 20 jobs) without further optimisation.
+    \item \textbf{No exact baseline.} Adding an exact or near-exact solver comparison, for example
+    using a MILP solver on smaller instances, would allow solution quality to be quantified rather
+    than only visualised.
+    \item \textbf{Static price horizon.} The energy price series is fixed for the duration of a run.
+    Extending the model to a rolling-horizon setting that incorporates updated price forecasts, as
+    discussed by \citet{burmeister2024memetic}, is a natural next step.
 \end{itemize}
 
 % =====================================================================
@@ -476,10 +476,11 @@ in \citet{burmeister2024memetic}, not their full experimental apparatus. Specifi
 % =====================================================================
 
 This project implements a memetic NSGA-II for the energy-cost-aware Flexible Job-Shop Scheduling
-Problem, combining real Brandimarte benchmark instances with a real electricity price series to
-produce makespan/energy-cost trade-offs grounded in real problem data rather than synthetic instances
-or assumed energy rates. The approach and its motivation follow \citet{burmeister2024memetic}; this
-document explicitly distinguishes what is reproduced from what is simplified relative to that source.
+Problem. It combines real Brandimarte benchmark instances with a real electricity price series to
+produce makespan/energy-cost trade-offs grounded in real problem data, rather than synthetic
+instances or assumed energy rates. The approach and its motivation follow
+\citet{burmeister2024memetic}, and this document explicitly distinguishes what is reproduced from
+what is simplified relative to that source.
 
 % =====================================================================
 \bibliographystyle{plainnat}

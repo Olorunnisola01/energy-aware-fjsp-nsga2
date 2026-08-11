@@ -13,13 +13,13 @@
 \contentsline {subsection}{\numberline {4.3}Duplicate Removal}{5}{subsection.4.3}%
 \contentsline {section}{\numberline {5}Data}{5}{section.5}%
 \contentsline {subsection}{\numberline {5.1}Benchmark Instances}{5}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}Electricity Price Data}{5}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.2}Electricity Price Data}{6}{subsection.5.2}%
 \contentsline {section}{\numberline {6}Implementation}{6}{section.6}%
 \contentsline {section}{\numberline {7}Experimental Setup}{6}{section.7}%
-\contentsline {section}{\numberline {8}Results}{6}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Convergence}{6}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Pareto Front}{8}{subsection.8.2}%
-\contentsline {subsection}{\numberline {8.3}Schedule (Gantt Chart)}{8}{subsection.8.3}%
+\contentsline {section}{\numberline {8}Results}{7}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Convergence}{7}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Pareto Front}{7}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Schedule (Gantt Chart)}{9}{subsection.8.3}%
 \contentsline {section}{\numberline {9}Comparison with the Source Study}{9}{section.9}%
-\contentsline {section}{\numberline {10}Limitations and Future Work}{9}{section.10}%
+\contentsline {section}{\numberline {10}Limitations and Future Work}{10}{section.10}%
 \contentsline {section}{\numberline {11}Conclusion}{10}{section.11}%
