@@ -46,7 +46,7 @@
 \begin{abstract}
 \noindent
 This document describes the design, implementation, and results of a bi-objective optimisation
-mini project that schedules the Flexible Job-Shop Scheduling Problem (FJSP) to jointly minimise
+project that schedules the Flexible Job-Shop Scheduling Problem (FJSP) to jointly minimise
 \textit{makespan} and \textit{energy cost}, where energy cost is computed from a real, time-varying
 electricity price series rather than an assumed flat rate. The scheduler is a \emph{memetic
 NSGA-II}: the multi-objective genetic algorithm NSGA-II \citep{deb2002fast}, hybridised with a
@@ -71,7 +71,7 @@ Electricity grids are incorporating increasing shares of intermittent renewable 
 solar), which introduces volatility into energy supply and, consequently, into energy prices
 \citep{abujarad2017recent,gandhi2016review}. Under real-time pricing (RTP) tariffs, the cost of
 electricity can change at hourly (or finer) intervals depending on current market conditions. This
-creates an opportunity, and an incentive, for energy-flexible manufacturers to practice \emph{demand
+creates both an opportunity and an incentive for energy-flexible manufacturers to practice \emph{demand
 response}: shifting production toward hours when energy is cheap, without any new capital investment
 \citep{detorre2022exploiting}.
 
@@ -82,14 +82,14 @@ where each operation is tied to exactly one machine. This flexibility gives a sc
 \textit{when} and \textit{on which machine} to run an operation, which is exactly the freedom needed
 to react to a time-varying energy price signal.
 
-Minimising energy cost in isolation is not useful: a scheduler that always waits for the cheapest
-possible price window will produce arbitrarily long schedules. The problem is therefore inherently
-\emph{bi-objective}, simultaneously minimising makespan (total completion time) and energy cost, and
-the interesting output is not a single ``best'' schedule but a \emph{Pareto front} of trade-offs
-between the two, from which a decision-maker can pick according to their own priorities.
+Minimising energy cost in isolation is an ill-posed objective: a scheduler that always waits for the
+cheapest possible price window will produce arbitrarily long schedules. The problem is therefore
+inherently \emph{bi-objective}, simultaneously minimising makespan (total completion time) and energy
+cost, and the output of interest is not a single ``best'' schedule but a \emph{Pareto front} of
+trade-offs between the two, from which a decision-maker can select according to their own priorities.
 
-This project implements exactly that: a memetic NSGA-II that approximates the makespan/energy-cost
-Pareto front for FJSP instances under a real RTP electricity price signal.
+This project implements a memetic NSGA-II that approximates the makespan/energy-cost Pareto front for
+FJSP instances under a real RTP electricity price signal.
 
 % =====================================================================
 \section{Related Work}
@@ -424,7 +424,7 @@ Each colour is a distinct job; bars are labelled with job/operation IDs where sp
 \end{figure}
 
 % =====================================================================
-\section{Discussion: Relationship to Burmeister et al. (2024)}
+\section{Comparison with the Source Study}
 \label{sec:discussion}
 % =====================================================================
 
@@ -435,7 +435,7 @@ in \citet{burmeister2024memetic}, not their full experimental apparatus. Specifi
     \item \textbf{Benchmark coverage.} The source paper validates on all fifteen Brandimarte
     instances (mk01--mk15); this project includes and parses ten (mk01--mk10). The remaining five
     (mk11--mk15) are substantially larger and, per the source paper, pushed even an exact Gurobi
-    solver to its memory limits; they are out of scope for a mini project run on commodity
+    solver to its memory limits; they are out of scope for a project of this scale run on commodity
     hardware.
     \item \textbf{No exact-solver comparison.} The source paper's central empirical claim is a
     comparison of the memetic NSGA-II's approximated front against an exact Gurobi baseline (with
@@ -477,10 +477,9 @@ in \citet{burmeister2024memetic}, not their full experimental apparatus. Specifi
 
 This project implements a memetic NSGA-II for the energy-cost-aware Flexible Job-Shop Scheduling
 Problem, combining real Brandimarte benchmark instances with a real electricity price series to
-produce genuine, non-trivial makespan/energy-cost trade-offs rather than results based on synthetic
-problem instances or assumed energy rates. The approach and its motivation follow
-\citet{burmeister2024memetic}; this document has aimed to be explicit about what is reproduced and
-what is simplified, in the interest of academic honesty about the project's scope.
+produce makespan/energy-cost trade-offs grounded in real problem data rather than synthetic instances
+or assumed energy rates. The approach and its motivation follow \citet{burmeister2024memetic}; this
+document explicitly distinguishes what is reproduced from what is simplified relative to that source.
 
 % =====================================================================
 \bibliographystyle{plainnat}
