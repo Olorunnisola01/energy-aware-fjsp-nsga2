@@ -275,39 +275,27 @@ than approximated at hourly granularity.
 \label{sec:implementation}
 % =====================================================================
 
-The project is implemented in Python~3, using:
-\begin{itemize}
-    \item \texttt{pymoo} for the NSGA-II algorithm framework;
-    \item \texttt{numpy}/\texttt{pandas} for numerical computation and price-series handling;
-    \item \texttt{matplotlib} for all figures.
-\end{itemize}
+The framework is implemented in Python~3, built on the \texttt{pymoo} library, which supplies the
+NSGA-II implementation and its underlying variation and selection operators. Numerical computation
+and price-series handling are performed with NumPy and pandas, and all figures are produced with
+Matplotlib.
 
-\begin{table}[htbp]
-    \centering
-    \caption{Key files in the project repository.}
-    \label{tab:key-files}
-    \begin{tabular}{lp{0.65\textwidth}}
-        \toprule
-        \textbf{File} & \textbf{Purpose} \\
-        \midrule
-        \texttt{nsga2\_fjsp\_energy.py} & Problem definition, memetic NSGA-II, plotting, CLI \\
-        \texttt{parse\_fjs\_instance} (in the same file) & Hurink \texttt{.fjs} benchmark parser \\
-        \texttt{parsing\_data.py} & One-off preprocessing of the raw ENTSO-E export \\
-        \texttt{benchmarks/brandimarte/mk01.txt}--\texttt{mk10.txt} & Benchmark instance files \\
-        \texttt{belgium\_prices\_feb2022.csv} & Cleaned electricity price series \\
-        \bottomrule
-    \end{tabular}
-\end{table}
+The problem definition, the memetic NSGA-II described in Section~\ref{subsec:memetic-nsga2},
+the Hurink \texttt{.fjs} benchmark parser, and the command-line interface are implemented within a
+single module. Preprocessing of the raw ENTSO-E electricity-price export is handled separately, as a
+one-off step, producing the cleaned, per-minute price series used at run time.
 
-The benchmark instance and the NSGA-II run are both fully specified by command-line arguments and a
-random seed, so a given configuration always reproduces the same Pareto front:
+Every experiment is fully specified by a benchmark instance, a population size, a number of
+generations, and a random seed, all supplied as command-line arguments; a given configuration
+therefore always reproduces the same Pareto front. The results reported in
+Section~\ref{sec:results} were generated with the following configuration:
 
 \begin{lstlisting}[language=bash,frame=single,numbers=none,basicstyle=\ttfamily\footnotesize]
 python nsga2_fjsp_energy.py --instance mk01 --n-gen 800 --pop-size 20 --seed 42
 \end{lstlisting}
 
-A \texttt{--random} flag is also available for generating synthetic FJSP instances of any size,
-independent of the benchmark suite.
+For experimentation beyond the Brandimarte suite, a \texttt{--random} flag generates synthetic FJSP
+instances of arbitrary size, independent of the benchmark instances used in this study.
 
 % =====================================================================
 \section{Experimental Setup}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.21)  11 AUG 2026 20:47
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.21)  11 AUG 2026 21:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -732,42 +732,38 @@ exmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{c:/texlive/2026/texmf-dist/fonts/en
 c/dvips/lm/lm-rm.enc}{c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathit.e
 nc}]
 [3{c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}]
-Overfull \hbox (95.42728pt too wide) in paragraph at lines 289--300
- [][] 
- []
-
 (c:/texlive/2026/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2025/11/14 1.11b listings language file
 )
 (c:/texlive/2026/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2025/11/14 1.11b listings language file
 ) [4]
-<../outputs/convergence_makespan.png, id=190, 578.16pt x 361.35pt>
+<../outputs/convergence_makespan.png, id=192, 578.16pt x 361.35pt>
 File: ../outputs/convergence_makespan.png Graphic file (type png)
 <use ../outputs/convergence_makespan.png>
 Package pdftex.def Info: ../outputs/convergence_makespan.png  used on input lin
-e 349.
+e 337.
 (pdftex.def)             Requested size: 339.72592pt x 212.329pt.
-<../outputs/convergence_energy.png, id=192, 578.16pt x 361.35pt>
+<../outputs/convergence_energy.png, id=194, 578.16pt x 361.35pt>
 File: ../outputs/convergence_energy.png Graphic file (type png)
 <use ../outputs/convergence_energy.png>
 Package pdftex.def Info: ../outputs/convergence_energy.png  used on input line 
-356.
+344.
 (pdftex.def)             Requested size: 339.72592pt x 212.329pt.
- [5 <../outputs/convergence_makespan.png>]
-<../outputs/pareto_front.png, id=204, 505.89pt x 361.35pt>
+<../outputs/pareto_front.png, id=197, 505.89pt x 361.35pt>
 File: ../outputs/pareto_front.png Graphic file (type png)
 <use ../outputs/pareto_front.png>
-Package pdftex.def Info: ../outputs/pareto_front.png  used on input line 371.
+Package pdftex.def Info: ../outputs/pareto_front.png  used on input line 359.
 (pdftex.def)             Requested size: 317.07614pt x 226.4883pt.
-<../outputs/gantt_chart.png, id=205, 722.7pt x 361.35pt>
+ [5 <../outputs/convergence_makespan.png>] [6 <../outputs/convergence_energy.pn
+g> <../outputs/pareto_front.png>]
+<../outputs/gantt_chart.png, id=214, 722.7pt x 361.35pt>
 File: ../outputs/gantt_chart.png Graphic file (type png)
 <use ../outputs/gantt_chart.png>
-Package pdftex.def Info: ../outputs/gantt_chart.png  used on input line 411.
+Package pdftex.def Info: ../outputs/gantt_chart.png  used on input line 399.
 (pdftex.def)             Requested size: 430.31812pt x 215.15755pt.
- [6 <../outputs/convergence_energy.png> <../outputs/pareto_front.png>] [7 <../o
-utputs/gantt_chart.png>] (./documentation.bbl
-[8] [9]) [10] (./documentation.aux)
+ [7 <../outputs/gantt_chart.png>] (./documentation.bbl
+[8]) [9] (./documentation.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-04-28>
@@ -776,10 +772,10 @@ Package rerunfilecheck Info: File `documentation.out' has not changed.
 (rerunfilecheck)             Checksum: 196CD800BB05BB377EAF92F394CF282C;3511.
  ) 
 Here is how much of TeX's memory you used:
- 21519 strings out of 467341
- 400386 string characters out of 5419596
- 997716 words of memory out of 5000000
- 50092 multiletter control sequences out of 15000+600000
+ 21516 strings out of 467341
+ 400349 string characters out of 5419596
+ 995623 words of memory out of 5000000
+ 50091 multiletter control sequences out of 15000+600000
  712527 words of font info for 198 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,11n,79p,1010b,1260s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -793,10 +789,10 @@ m/lmr12.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/texl
 ive/2026/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/texlive/2026/texmf-dis
 t/fonts/type1/public/lm/lmsy10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/publ
 ic/lm/lmtt10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmtt9.pfb>
-Output written on documentation.pdf (10 pages, 454583 bytes).
+Output written on documentation.pdf (9 pages, 454316 bytes).
 PDF statistics:
- 325 PDF objects out of 1000 (max. 8388607)
- 273 compressed objects within 3 object streams
- 68 named destinations out of 1000 (max. 500000)
+ 321 PDF objects out of 1000 (max. 8388607)
+ 270 compressed objects within 3 object streams
+ 66 named destinations out of 1000 (max. 500000)
  46813 words of extra memory for PDF output out of 51595 (max. 10000000)
 
