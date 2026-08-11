@@ -96,16 +96,12 @@ FJSP instances under a real RTP electricity price signal.
 \label{subsec:energy-cost-aware}
 
 The literature on energy-cost-aware scheduling is organised around three tariff structures
-\citep{burmeister2024memetic}:
-
-\begin{enumerate}[label=\arabic*.]
-    \item \textbf{Fixed rate}: a constant price regardless of time of consumption
-    (e.g.\ \citet{carlucci2021job,kemmo2015job}).
-    \item \textbf{Time-of-use (TOU) rate}: the day is split into a few broad periods (e.g.\ off-peak,
-    mid-peak, on-peak), each with its own price (e.g.\ \citet{zhang2014energy,biel2018flow}).
-    \item \textbf{Real-time pricing (RTP)}: the price tracks the current market value of energy and
-    can change at hourly or finer intervals (e.g.\ \citet{gong2015energy,shrouf2014optimizing}).
-\end{enumerate}
+\citep{burmeister2024memetic}. Under a \emph{fixed rate}, the price of electricity is constant
+regardless of when it is consumed (e.g.\ \citet{carlucci2021job,kemmo2015job}). Under a
+\emph{time-of-use (TOU) rate}, the day is split into a few broad periods, such as off-peak,
+mid-peak, and on-peak, each with its own price (e.g.\ \citet{zhang2014energy,biel2018flow}). Under
+\emph{real-time pricing (RTP)}, the price tracks the current market value of energy and can change
+at hourly or finer intervals (e.g.\ \citet{gong2015energy,shrouf2014optimizing}).
 
 \citet{burmeister2024memetic} identify a gap in this literature: most prior RTP-based work is limited
 to single-machine or flow-shop settings, considers energy cost alone, or ignores makespan entirely.

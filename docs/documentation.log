@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.21)  11 AUG 2026 20:40
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.21)  11 AUG 2026 20:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -721,18 +721,18 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 {c:/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/texlive/2026/
 texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}]
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
-47.
+43.
  (c:/texlive/2026/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 147.
+(Font)              <10.95> on input line 143.
  [2{c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{c:/texlive/2026/t
 exmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{c:/texlive/2026/texmf-dist/fonts/en
 c/dvips/lm/lm-rm.enc}{c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathit.e
 nc}]
 [3{c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}]
-Overfull \hbox (95.42728pt too wide) in paragraph at lines 293--304
+Overfull \hbox (95.42728pt too wide) in paragraph at lines 289--300
  [][] 
  []
 
@@ -742,28 +742,28 @@ File: lstlang1.sty 2025/11/14 1.11b listings language file
 (c:/texlive/2026/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2025/11/14 1.11b listings language file
 ) [4]
-<../outputs/convergence_makespan.png, id=193, 578.16pt x 361.35pt>
+<../outputs/convergence_makespan.png, id=190, 578.16pt x 361.35pt>
 File: ../outputs/convergence_makespan.png Graphic file (type png)
 <use ../outputs/convergence_makespan.png>
 Package pdftex.def Info: ../outputs/convergence_makespan.png  used on input lin
-e 353.
+e 349.
 (pdftex.def)             Requested size: 339.72592pt x 212.329pt.
-<../outputs/convergence_energy.png, id=195, 578.16pt x 361.35pt>
+<../outputs/convergence_energy.png, id=192, 578.16pt x 361.35pt>
 File: ../outputs/convergence_energy.png Graphic file (type png)
 <use ../outputs/convergence_energy.png>
 Package pdftex.def Info: ../outputs/convergence_energy.png  used on input line 
-360.
+356.
 (pdftex.def)             Requested size: 339.72592pt x 212.329pt.
  [5 <../outputs/convergence_makespan.png>]
-<../outputs/pareto_front.png, id=207, 505.89pt x 361.35pt>
+<../outputs/pareto_front.png, id=204, 505.89pt x 361.35pt>
 File: ../outputs/pareto_front.png Graphic file (type png)
 <use ../outputs/pareto_front.png>
-Package pdftex.def Info: ../outputs/pareto_front.png  used on input line 375.
+Package pdftex.def Info: ../outputs/pareto_front.png  used on input line 371.
 (pdftex.def)             Requested size: 317.07614pt x 226.4883pt.
-<../outputs/gantt_chart.png, id=208, 722.7pt x 361.35pt>
+<../outputs/gantt_chart.png, id=205, 722.7pt x 361.35pt>
 File: ../outputs/gantt_chart.png Graphic file (type png)
 <use ../outputs/gantt_chart.png>
-Package pdftex.def Info: ../outputs/gantt_chart.png  used on input line 415.
+Package pdftex.def Info: ../outputs/gantt_chart.png  used on input line 411.
 (pdftex.def)             Requested size: 430.31812pt x 215.15755pt.
  [6 <../outputs/convergence_energy.png> <../outputs/pareto_front.png>] [7 <../o
 utputs/gantt_chart.png>] (./documentation.bbl
@@ -776,11 +776,11 @@ Package rerunfilecheck Info: File `documentation.out' has not changed.
 (rerunfilecheck)             Checksum: 196CD800BB05BB377EAF92F394CF282C;3511.
  ) 
 Here is how much of TeX's memory you used:
- 21524 strings out of 467341
- 400422 string characters out of 5419596
+ 21519 strings out of 467341
+ 400386 string characters out of 5419596
  997716 words of memory out of 5000000
  50092 multiletter control sequences out of 15000+600000
- 712574 words of font info for 199 fonts, out of 8000000 for 9000
+ 712527 words of font info for 198 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,11n,79p,1010b,1260s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/texlive/2026
@@ -793,10 +793,10 @@ m/lmr12.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/texl
 ive/2026/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/texlive/2026/texmf-dis
 t/fonts/type1/public/lm/lmsy10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/publ
 ic/lm/lmtt10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmtt9.pfb>
-Output written on documentation.pdf (10 pages, 454344 bytes).
+Output written on documentation.pdf (10 pages, 454583 bytes).
 PDF statistics:
- 328 PDF objects out of 1000 (max. 8388607)
- 276 compressed objects within 3 object streams
- 71 named destinations out of 1000 (max. 500000)
+ 325 PDF objects out of 1000 (max. 8388607)
+ 273 compressed objects within 3 object streams
+ 68 named destinations out of 1000 (max. 500000)
  46813 words of extra memory for PDF output out of 51595 (max. 10000000)
 
